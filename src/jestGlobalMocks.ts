@@ -17,12 +17,11 @@ Object.defineProperty(document, 'doctype', {
   value: '<!DOCTYPE html>'
 });
 Object.defineProperty(window, 'getComputedStyle', {
-  value: () => {
-    return {
-      display: 'none',
-      appearance: ['-webkit-appearance']
-    };
-  }
+  value: () => ({
+    getPropertyValue: (prop) => {
+      return '';
+    }
+  })
 });
 Object.defineProperty(document.body.style, 'transform', {
   value: () => {

@@ -1,31 +1,30 @@
-import { TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, async } from '@angular/core/testing';
 import { AppComponent } from './app.component';
+import { render, RenderResult } from '@testing-library/angular';
+import { checkA11y } from '../../axe-helper';
 
 describe('AppComponent', () => {
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
+  let renderResult: RenderResult<AppComponent>;
+  let component: AppComponent;
+  let fixture: ComponentFixture<AppComponent>;
+  beforeEach(async () => {
+    renderResult = await render(AppComponent, {
       declarations: [
         AppComponent
       ],
-    }).compileComponents();
-  }));
+    });
+    fixture = renderResult.fixture;
+    component = fixture.componentInstance;
+  });
 
   it('should create the app', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.debugElement.componentInstance;
-    expect(app).toBeTruthy();
+    const { container } = renderResult;
+    expect(container).toBeInTheDocument();
   });
 
-  it(`should have as title 'angular-jest'`, () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.debugElement.componentInstance;
-    expect(app.title).toEqual('angular-jest');
+  it('should be accessible', async () => {
+    const { container } = renderResult;
+    await checkA11y(container);
   });
 
-  it('should render title in a h1 tag', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('h1').textContent).toContain('Welcome to angular-jest!');
-  });
 });
